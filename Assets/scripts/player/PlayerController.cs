@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class PlayerController : MonoBehaviour {
@@ -12,6 +13,9 @@ public class PlayerController : MonoBehaviour {
 	private float thresholdX = 7f;
 	private float thresholdY = 14f;
 	private bool setPower, didJump;
+	private Slider powerbar;
+	private float powerarThreshold = 1f;
+	private float powerbarValue;
 
 	private void Awake () {
 		MakeInstance ();
@@ -25,9 +29,13 @@ public class PlayerController : MonoBehaviour {
 	private void OnTriggerEnter2D (Collider2D trig) {
 		if (didJump) {
 			didJump = false;
+			anim.SetBool ("jump", didJump);
 			if (trig.tag == "platform") {
 				if (GameManager.instance != null) {
 					GameManager.instance.CreateNewPlatformAndLerp (trig.transform.position.x);
+				}
+				if (ScoreManager.instance != null) {
+					ScoreManager.instance.IncrementScore ();
 				}
 			}
 		}
@@ -53,6 +61,11 @@ public class PlayerController : MonoBehaviour {
 	private void Initialize () {
 		rb = GetComponent<Rigidbody2D> ();
 		anim = GetComponent<Animator> ();
+		powerbar = GameObject.FindGameObjectWithTag ("powerbar").GetComponent<Slider> ();;
+
+		powerbar.minValue = 0f;
+		powerbar.maxValue = 1f;
+		powerbarValue = powerbarValue;
 	}
 
 	private void SetPower () {
@@ -67,6 +80,8 @@ public class PlayerController : MonoBehaviour {
 			if (forceY > 13.5f) {
 				forceY = 13.5f;
 			}
+			powerbarValue = forceX / 6.5f;
+			powerbar.value = powerbarValue;
 		}
 	}
 
@@ -74,6 +89,10 @@ public class PlayerController : MonoBehaviour {
 		rb.velocity = new Vector2 (forceX, forceY);
 		forceX = forceY = 0;
 		didJump = true;
+		anim.SetBool ("jump", didJump);
+
+		powerbarValue = 0;
+		powerbar.value = powerbarValue;
 	}
 
 	private void MakeInstance () {

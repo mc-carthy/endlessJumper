@@ -8,6 +8,7 @@ public class GameOverController : MonoBehaviour {
 	public static GameOverController instance;
 
 	private GameObject gameOverPanel;
+	private GameObject scoreText;
 	private Animator anim;
 	private Button restartBtn, backBtn;
 	private Text finalScore;
@@ -19,7 +20,9 @@ public class GameOverController : MonoBehaviour {
 
 	public void GameOverShowPanel () {
 		gameOverPanel.SetActive (true);
+		finalScore.text = "Score\n" + ScoreManager.instance.GetScore ().ToString ();
 		anim.Play ("fadeIn");
+		scoreText.SetActive (false);
 	}
 
 	public void RestartLevel () {
@@ -39,6 +42,7 @@ public class GameOverController : MonoBehaviour {
 		backBtn.onClick.RemoveAllListeners ();
 		restartBtn.onClick.AddListener (() => RestartLevel ());
 		backBtn.onClick.AddListener (() => BackToMenu ());
+		scoreText = GameObject.FindGameObjectWithTag ("scoreText");
 		finalScore = GameObject.FindGameObjectWithTag ("finalScore").GetComponent<Text>();
 		gameOverPanel.SetActive (false);
 	}
