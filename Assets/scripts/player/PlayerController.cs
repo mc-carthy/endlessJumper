@@ -31,6 +31,13 @@ public class PlayerController : MonoBehaviour {
 				}
 			}
 		}
+
+		if (trig.tag == "dead") {
+			if (GameOverController.instance != null) {
+				GameOverController.instance.GameOverShowPanel ();
+			}
+			Destroy (gameObject);
+		}
 	}
 
 	public void SetPower (bool setPower) {
