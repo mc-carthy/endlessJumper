@@ -12,7 +12,7 @@ public class ButtonController : MonoBehaviour, IPointerDownHandler, IPointerUpHa
 
 	public void OnPointerUp (PointerEventData data) {
 		if (PlayerController.instance != null) {
-			PlayerController.instance.SetPower (true);
+			PlayerController.instance.SetPower (false);
 		}
 	}
 }
