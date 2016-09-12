@@ -26,7 +26,9 @@ public class PlayerController : MonoBehaviour {
 		if (didJump) {
 			didJump = false;
 			if (trig.tag == "platform") {
-				Debug.Log ("Landed on platform after jumping");
+				if (GameManager.instance != null) {
+					GameManager.instance.CreateNewPlatformAndLerp (trig.transform.position.x);
+				}
 			}
 		}
 	}
